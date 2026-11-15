@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ujian KKA Kelas 9 - Koding dan Kecerdasan Artificial Oleh Merisa</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&display=swap');
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: "Times New Roman", Times, serif;
+    background: linear-gradient(135deg, #e8f0fe 0%, #f5f7fa 100%);
+    color: #1a1a1a;
+    line-height: 1.6;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    overflow: hidden;
+  }
+  
+  header {
+    background: linear-gradient(90deg, #1a365d 0%, #2b6cb0 100%);
+    color: white;
+    padding: 24px 30px;
+    text-align: center;
+  }
+  
+  header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  
+  header p {
+    font-size: 1rem;
+    opacity: 0.95;
+  }
+  
+  .identitas {
+    padding: 25px 30px;
+    background: #f7fafc;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  
+  .identitas h2 {
+    font-size: 1.3rem;
+    color: #2b6cb0;
+    margin-bottom: 18px;
+    border-bottom: 2px solid #2b6cb0;
+    padding-bottom: 6px;
+    display: inline-block;
+  }
+  
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .form-group {
+    flex: 1;
+    min-width: 220px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #2d3748;
+  }
+  
+  .form-group input, .form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #cbd5e0;
+    border-radius: 6px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  
+  .form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: #2b6cb0;
+  }
+  
+  .materi-box {
+    background: #ebf8ff;
+    border-left: 5px solid #3182ce;
+    padding: 14px 18px;
+    margin-top: 15px;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.95rem;
+  }
+  
+  .materi-box strong {
+    color: #2b6cb0;
+  }
+  
+  /* Camera & Control Section */
+  .proctor-section {
+    padding: 20px 30px;
+    background: #fff5f5;
+    border-bottom: 2px solid #fed7d7;
+    display: none;
+  }
+  
+  .proctor-section.active {
+    display: block;
+  }
+  
+  .camera-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  
+  #videoPreview {
+    width: 240px;
+    height: 180px;
+    background: #1a202c;
+    border: 3px solid #e53e3e;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  
+  .status-panel {
+    flex: 1;
+    min-width: 260px;
+  }
+  
+  .status-panel h3 {
+    color: #c53030;
+    margin-bottom: 10px;
+  }
+  
+  .status-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+  
+  .status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #a0aec0;
+  }
+  
+  .status-dot.on {
+    background: #38a169;
+    box-shadow: 0 0 8px #38a169;
+  }
+  
+  .status-dot.off {
+    background: #e53e3e;
+  }
+  
+  .warning-box {
+    background: #fff5f5;
+    border: 2px solid #fc8181;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    color: #c53030;
+    font-weight: bold;
+    display: none;
+  }
+  
+  .warning-box.show {
+    display: block;
+    animation: pulse 1s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  
+  /* Quiz Area */
+  .quiz-area {
+    padding: 25px 30px 40px;
+    display: none;
+  }
+  
+  .quiz-area.active {
+    display: block;
+  }
+  
+  .timer-bar {
+    position: sticky;
+    top: 0;
+    background: #2b6cb0;
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  
+  .timer-bar #timer {
+    font-size: 1.4rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  
+  .progress-info {
+    font-size: 0.95rem;
+  }
+  
+  .question-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 22px;
+    transition: box-shadow 0.2s;
+  }
+  
+  .question-card:hover {
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+  
+  .question-number {
+    display: inline-block;
+    background: #2b6cb0;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .question-text {
+    font-size: 1.05rem;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  
+  .options label {
+    display: block;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  
+  .options label:hover {
+    border-color: #63b3ed;
+    background: #ebf8ff;
+  }
+  
+  .options input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.15);
+  }
+  
+  .options input[type="radio"]:checked + span {
+    font-weight: bold;
+    color: #2b6cb0;
+  }
+  
+  .btn-area {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px dashed #cbd5e0;
+  }
+  
+  .btn {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.1rem;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: bold;
+  }
+  
+  .btn-start {
+    background: linear-gradient(90deg, #38a169, #2f855a);
+    color: white;
+    box-shadow: 0 4px 12px rgba(56,161,105,0.4);
+  }
+  
+  .btn-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(56,161,105,0.5);
+  }
+  
+  .btn-submit {
+    background: linear-gradient(90deg, #2b6cb0, #2c5282);
+    color: white;
+    box-shadow: 0 4px 12px rgba(43,108,176,0.4);
+  }
+  
+  .btn-submit:hover {
+    transform: translateY(-2px);
+  }
+  
+  .btn-submit:disabled {
+    background: #a0aec0;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  /* Result */
+  .result-section {
+    display: none;
+    padding: 40px 30px;
+    text-align: center;
+  }
+  
+  .result-section.active {
+    display: block;
+  }
+  
+  .score-circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2b6cb0, #4299e1);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 25px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    box-shadow: 0 8px 24px rgba(43,108,176,0.35);
+  }
+  
+  .score-circle small {
+    font-size: 1rem;
+    font-weight: normal;
+  }
+  
+  .fail-banner {
+    background: #c53030;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: none;
+  }
+  
+  .fail-banner.show {
+    display: block;
+  }
+  
+  /* Start Screen */
+  .start-screen {
+    padding: 40px 30px;
+    text-align: center;
+  }
+  
+  .rules {
+    text-align: left;
+    background: #fffaf0;
+    border: 2px solid #f6ad55;
+    border-radius: 10px;
+    padding: 20px 25px;
+    margin: 25px auto;
+    max-width: 700px;
+  }
+  
+  .rules h3 {
+    color: #c05600;
+    margin-bottom: 12px;
+  }
+  
+  .rules ul {
+    padding-left: 22px;
+  }
+  
+  .rules li {
+    margin-bottom: 8px;
+  }
+  
+  .camera-note {
+    background: #fed7d7;
+    color: #742a2a;
+    padding: 12px 18px;
+    border-radius: 8px;
+    margin: 20px auto;
+    max-width: 700px;
+    font-weight: bold;
+  }
+  
+  /* Overlay fail */
+  #failOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(197, 48, 48, 0.92);
+    color: white;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    text-align: center;
+    padding: 30px;
+  }
+  
+  #failOverlay.show {
+    display: flex;
+  }
+  
+  #failOverlay h1 {
+    font-size: 2.8rem;
+    margin-bottom: 15px;
+  }
+  
+  #failOverlay p {
+    font-size: 1.3rem;
+    max-width: 500px;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 15px;
+    background: #edf2f7;
+    color: #4a5568;
+    font-size: 0.9rem;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>KODING DAN KECERDASAN ARTIFICIAL</h1>
+      <p>Mata Pelajaran: Koding dan Kecerdasan Artifisial | Kelas 9 | Kurikulum Merdeka</p>
+    </header>
+    
+    <!-- IDENTITAS -->
+    <div class="identitas" id="identitasSection">
+      <h2>Identitas Peserta Didik</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nama">Nama Lengkap</label>
+          <input type="text" id="nama" placeholder="Masukkan nama lengkap Anda" required>
+        </div>
+        <div class="form-group">
+          <label for="kelas">Kelas</label>
+          <input type="text" id="kelas" placeholder="Contoh: IX-A" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nis">Nomor Absen</label>
+          <input type="text" id="nis" placeholder="Opsional">
+        </div>
+        <div class="form-group">
+          <label>Mata Pelajaran</label>
+          <input type="text" value="KKA - Kelas 9" readonly style="background:#edf2f7;">
+        </div>
+      </div>
+      
+      <div class="materi-box">
+        <strong>Materi yang diujikan:</strong><br>
+        • Berpikir Komputasional Tingkat Lanjut<br>
+        • Algoritma Pencarian: Binary Search &amp; Linear Search<br>
+        • Algoritma Pengurutan: Bubble Sort &amp; Insertion Sort<br>
+        • Notasi Algoritma: Flowchart standar dan Pseudocode terstruktur<br>
+        • Struktur kontrol kondisi kompleks (if-else bercabang)<br>
+        • Perulangan bersarang (nested loops)<br>
+        • Pemrograman Blok Lanjut (Scratch / Blockly)
+      </div>
+    </div>
+    
+    <!-- START SCREEN -->
+    <div class="start-screen" id="startScreen">
+      <h2 style="color:#2b6cb0; margin-bottom:15px;">Petunjuk Pengerjaan</h2>
+      <div class="rules">
+        <h3>Peraturan Ujian (WAJIB DIBACA)</h3>
+        <ul>
+          <li>Ujian ini terdiri dari <strong>50 soal pilihan ganda</strong>.</li>
+          <li>Waktu pengerjaan: <strong>90 menit</strong>.</li>
+          <li>Setiap soal hanya memiliki <strong>satu jawaban benar</strong>.</li>
+          <li><strong>Kamera wajib aktif</strong> selama ujian berlangsung.</li>
+          <li>Dilarang membuka tab/aplikasi lain, menyalin, atau mencari jawaban di internet.</li>
+          <li>Jika terdeteksi membuka aplikasi/tab lain, sistem akan <strong>membunyikan alarm</strong> dan ujian dinyatakan <strong>GAGAL</strong>.</li>
+          <li>Jangan tekan tombol Back / Refresh browser selama ujian.</li>
+          <li>Pastikan koneksi internet stabil dan kamera berfungsi.</li>
+        </ul>
+      </div>
+      
+      <div class="camera-note">
+        ⚠ PERHATIAN: Saat menekan tombol "Mulai Ujian", browser akan meminta izin kamera. Izinkan akses kamera agar ujian dapat dimulai. Tanpa kamera, ujian tidak dapat dilanjutkan.
+      </div>
+      
+      <button class="btn btn-start" id="btnMulai" onclick="mulaiUjian()">MULAI UJIAN SEKARANG</button>
+    </div>
+    
+    <!-- PROCTOR SECTION (kamera) -->
+    <div class="proctor-section" id="proctorSection">
+      <div class="camera-wrapper">
+        <video id="videoPreview" autoplay playsinline muted></video>
+        <div class="status-panel">
+          <h3>Status Pengawasan</h3>
+          <div class="status-item">
+            <div class="status-dot" id="dotKamera"></div>
+            <span id="statusKamera">Kamera: Menunggu...</span>
+          </div>
+          <div class="status-item">
+            <div class="status-dot on" id="dotTab"></div>
+            <span id="statusTab">Tab Aktif: Ya</span>
+          </div>
+          <div class="status-item">
+            <div class="status-dot on" id="dotFocus"></div>
+            <span id="statusFocus">Fokus Jendela: Aktif</span>
+          </div>
+          <div class="warning-box" id="warningBox">
+            ⚠ TERDETEKSI AKTIVITAS MENCURANG! Alarm dibunyikan.
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- QUIZ AREA -->
+    <div class="quiz-area" id="quizArea">
+      <div class="timer-bar">
+        <div class="progress-info">Soal terjawab: <span id="answeredCount">0</span> / 50</div>
+        <div id="timer">90:00</div>
+      </div>
+      
+      <form id="quizForm">
+        <!-- SOAL 1-50 akan di-generate di sini oleh JavaScript -->
+        <div id="questionsContainer"></div>
+        
+        <div class="btn-area">
+          <button type="button" class="btn btn-submit" id="btnSubmit" onclick="submitQuiz()">KIRIM JAWABAN</button>
+        </div>
+      </form>
+    </div>
+    
+    <!-- RESULT -->
+    <div class="result-section" id="resultSection">
+      <div class="fail-banner" id="failBanner">UJIAN DINYATAKAN GAGAL KARENA TERDETEKSI KECURANGAN</div>
+      <div class="score-circle">
+        <span id="scoreValue">0</span>
+        <small>/ 50</small>
+      </div>
+      <h2 id="resultTitle">Hasil Ujian</h2>
+      <p id="resultDetail" style="margin-top:12px; font-size:1.1rem;"></p>
+      <p id="studentInfo" style="margin-top:20px; color:#4a5568;"></p>
+      <button class="btn btn-start" style="margin-top:25px;" onclick="location.reload()">ULANGI / KEMBALI</button>
+    </div>
+    
+    <footer>
+      Merisa | Ujian Koding dan Kecerdasan Artificial Kelas 9  | Mode Proctoring Aktif
+    </footer>
+  </div>
+  
+  <!-- FAIL OVERLAY -->
+  <div id="failOverlay">
+    <h1>⚠ UJIAN GAGAL</h1>
+    <p>Anda terdeteksi membuka tab / aplikasi lain atau meninggalkan jendela ujian.<br>
+    Sistem telah membunyikan alarm dan ujian Anda dinyatakan <strong>GAGAL</strong>.</p>
+    <p style="margin-top:20px; font-size:1.1rem;">Silakan hubungi guru pengawas.</p>
+  </div>
+
+<script>
+// ===================== DATA SOAL (50 SOAL) =====================
+const soalList = [
+  // 1-8 Linear & Binary Search
+  {
+    q: "Algoritma pencarian yang memeriksa elemen satu per satu dari awal hingga akhir disebut...",
+    o: ["Binary Search", "Linear Search", "Hash Search", "Jump Search"],
+    a: 1
+  },
+  {
+    q: "Syarat utama agar Binary Search dapat digunakan adalah data harus...",
+    o: ["Berukuran kecil", "Sudah terurut", "Berisi bilangan genap saja", "Disimpan dalam stack"],
+    a: 1
+  },
+  {
+    q: "Kompleksitas waktu rata-rata Binary Search adalah...",
+    o: ["O(n)", "O(n²)", "O(log n)", "O(1)"],
+    a: 2
+  },
+  {
+    q: "Pada Binary Search, langkah pertama yang dilakukan adalah...",
+    o: ["Membandingkan elemen pertama dengan target", "Mencari elemen tengah (mid)", "Mengurutkan data terlebih dahulu", "Menghapus elemen yang tidak cocok"],
+    a: 1
+  },
+  {
+    q: "Keuntungan Linear Search dibandingkan Binary Search adalah...",
+    o: ["Lebih cepat pada data besar", "Tidak membutuhkan data terurut", "Menggunakan memori lebih sedikit", "Hanya bekerja pada array"],
+    a: 1
+  },
+  {
+    q: "Jika data memiliki 1024 elemen yang sudah terurut, berapa maksimal perbandingan yang dibutuhkan Binary Search untuk menemukan elemen?",
+    o: ["10", "11", "1024", "512"],
+    a: 0
+  },
+  {
+    q: "Dalam Linear Search, jika elemen yang dicari berada di posisi terakhir, maka jumlah perbandingan yang dilakukan adalah...",
+    o: ["1", "n/2", "n", "log n"],
+    a: 2
+  },
+  {
+    q: "Pernyataan yang BENAR tentang Binary Search adalah...",
+    o: ["Dapat digunakan pada data tidak terurut", "Lebih efisien daripada Linear Search pada data besar terurut", "Selalu memeriksa semua elemen", "Hanya bekerja pada linked list"],
+    a: 1
+  },
+  
+  // 9-16 Bubble Sort & Insertion Sort
+  {
+    q: "Algoritma pengurutan yang bekerja dengan membandingkan dan menukar elemen bersebelahan secara berulang disebut...",
+    o: ["Insertion Sort", "Bubble Sort", "Selection Sort", "Merge Sort"],
+    a: 1
+  },
+  {
+    q: "Pada Bubble Sort, elemen terbesar akan 'menggelembung' ke posisi...",
+    o: ["Awal array", "Akhir array", "Tengah array", "Posisi acak"],
+    a: 1
+  },
+  {
+    q: "Insertion Sort bekerja dengan cara...",
+    o: ["Membagi data menjadi dua bagian sama besar", "Menyisipkan elemen ke posisi yang tepat pada bagian yang sudah terurut", "Memilih elemen terkecil dan menukarnya", "Membandingkan elemen yang berjauhan"],
+    a: 1
+  },
+  {
+    q: "Kompleksitas waktu worst-case Bubble Sort adalah...",
+    o: ["O(n)", "O(n log n)", "O(n²)", "O(log n)"],
+    a: 2
+  },
+  {
+    q: "Analog Insertion Sort yang paling tepat adalah...",
+    o: ["Mengurutkan kartu di tangan saat bermain", "Menyortir bola berdasarkan ukuran dengan menukar bersebelahan", "Membagi data terus-menerus menjadi dua", "Mencari elemen terkecil berulang kali"],
+    a: 0
+  },
+  {
+    q: "Pada pass pertama Bubble Sort untuk data [5, 3, 8, 1], hasil setelah pass pertama adalah...",
+    o: ["[3, 5, 1, 8]", "[3, 5, 8, 1]", "[1, 3, 5, 8]", "[5, 3, 1, 8]"],
+    a: 0
+  },
+  {
+    q: "Keuntungan Insertion Sort dibandingkan Bubble Sort adalah...",
+    o: ["Lebih cepat pada data yang hampir terurut", "Tidak membutuhkan perbandingan", "Hanya menggunakan satu loop", "Bekerja pada data tidak terurut saja"],
+    a: 0
+  },
+  {
+    q: "Jika kita ingin mengoptimalkan Bubble Sort agar berhenti lebih awal ketika data sudah terurut, kita dapat menambahkan...",
+    o: ["Flag (tanda) apakah terjadi pertukaran", "Binary Search di dalam loop", "Penghapusan elemen", "Recursive call"],
+    a: 0
+  },
+  
+  // 17-25 Flowchart & Pseudocode
+  {
+    q: "Simbol flowchart yang berbentuk lonjong (oval) digunakan untuk...",
+    o: ["Proses", "Keputusan", "Terminal (Start/End)", "Input/Output"],
+    a: 2
+  },
+  {
+    q: "Simbol berbentuk belah ketupat (diamond) pada flowchart menyatakan...",
+    o: ["Proses perhitungan", "Keputusan / kondisi", "Input data", "Konektor"],
+    a: 1
+  },
+  {
+    q: "Pseudocode yang baik harus...",
+    o: ["Menggunakan bahasa pemrograman tertentu", "Mudah dibaca manusia dan mendekati struktur program", "Hanya berisi simbol matematika", "Ditulis dalam bahasa Inggris saja"],
+    a: 1
+  },
+  {
+    q: "Dalam pseudocode, struktur perulangan 'selama kondisi benar' biasanya ditulis dengan kata kunci...",
+    o: ["UNTUK", "SELAMA / WHILE", "JIKA", "ULANGI"],
+    a: 1
+  },
+  {
+    q: "Simbol parallelogram pada flowchart standar digunakan untuk...",
+    o: ["Terminal", "Proses", "Input / Output", "Keputusan"],
+    a: 2
+  },
+  {
+    q: "Urutan yang benar dalam menulis algoritma adalah...",
+    o: ["Kode program → Pseudocode → Flowchart", "Flowchart → Pseudocode → Kode program", "Pseudocode → Kode → Flowchart", "Langsung menulis kode saja"],
+    a: 1
+  },
+  {
+    q: "Keuntungan menggunakan flowchart adalah...",
+    o: ["Lebih mudah dipahami secara visual", "Lebih cepat dieksekusi komputer", "Tidak membutuhkan logika", "Hanya untuk program besar"],
+    a: 0
+  },
+  {
+    q: "Dalam pseudocode terstruktur, indentasi (penjorokan) digunakan untuk menunjukkan...",
+    o: ["Komentar", "Blok struktur kontrol (if, loop)", "Nama variabel", "Tipe data"],
+    a: 1
+  },
+  {
+    q: "Simbol panah pada flowchart berfungsi sebagai...",
+    o: ["Proses", "Alur / flow of control", "Keputusan", "Terminal"],
+    a: 1
+  },
+  
+  // 26-35 Struktur kontrol if-else kompleks & nested
+  {
+    q: "Struktur if-else yang memiliki lebih dari dua cabang (banyak kondisi) disebut...",
+    o: ["Nested if", "If tunggal", "Switch-case saja", "Loop"],
+    a: 0
+  },
+  {
+    q: "Perhatikan pseudocode berikut:\nJIKA nilai >= 90 MAKA predikat = \"A\"\nLAIN JIKA nilai >= 80 MAKA predikat = \"B\"\nLAIN JIKA nilai >= 70 MAKA predikat = \"C\"\nLAIN predikat = \"D\"\nStruktur di atas disebut...",
+    o: ["If tunggal", "If-else bercabang (else-if)", "Nested loop", "Binary search"],
+    a: 1
+  },
+  {
+    q: "Nested if terjadi ketika...",
+    o: ["If berada di dalam if lain", "Ada banyak else", "Menggunakan operator AND", "Menggunakan loop"],
+    a: 0
+  },
+  {
+    q: "Operator logika yang menghasilkan TRUE hanya jika kedua kondisi benar adalah...",
+    o: ["OR", "AND", "NOT", "XOR"],
+    a: 1
+  },
+  {
+    q: "Untuk memeriksa apakah sebuah bilangan berada di antara 10 dan 20 (inklusif), kondisi yang tepat adalah...",
+    o: ["bilangan > 10 OR bilangan < 20", "bilangan >= 10 AND bilangan <= 20", "bilangan == 10 AND bilangan == 20", "NOT (bilangan < 10)"],
+    a: 1
+  },
+  {
+    q: "Dalam struktur if-else bercabang, urutan kondisi sangat penting karena...",
+    o: ["Komputer membaca dari atas ke bawah dan berhenti saat kondisi terpenuhi", "Semua kondisi dicek bersamaan", "Else selalu dieksekusi", "Tidak ada pengaruh urutan"],
+    a: 0
+  },
+  {
+    q: "Kondisi kompleks: (umur >= 17 AND punyaSIM == true) OR (umur >= 21). Pernyataan ini paling tepat digunakan untuk...",
+    o: ["Mengecek kelayakan mengemudi", "Menghitung nilai rata-rata", "Mengurutkan data", "Mencari elemen"],
+    a: 0
+  },
+  {
+    q: "Jika kita menulis if di dalam else dari if lain, struktur tersebut disebut...",
+    o: ["Parallel if", "Nested if-else", "Switch", "Ternary"],
+    a: 1
+  },
+  {
+    q: "Operator NOT digunakan untuk...",
+    o: ["Menggabungkan dua kondisi", "Membalik nilai kebenaran suatu kondisi", "Membandingkan dua nilai", "Mengulang proses"],
+    a: 1
+  },
+  {
+    q: "Manakah yang merupakan contoh kondisi kompleks yang benar?",
+    o: ["if (x > 5) and (y < 10)", "if x > 5 and y < 10 then", "if (x > 5 && y < 10)", "Semua bisa benar tergantung bahasa/pseudocode"],
+    a: 3
+  },
+  
+  // 36-43 Nested Loops
+  {
+    q: "Perulangan bersarang (nested loop) terjadi ketika...",
+    o: ["Ada dua loop yang terpisah", "Satu loop berada di dalam loop lain", "Loop menggunakan if", "Loop berjalan sekali saja"],
+    a: 1
+  },
+  {
+    q: "Jika loop luar berjalan 5 kali dan loop dalam berjalan 4 kali, maka total eksekusi body loop dalam adalah...",
+    o: ["9", "20", "5", "4"],
+    a: 1
+  },
+  {
+    q: "Pola bintang berikut:\n*\n**\n***\n****\nPaling mudah dibuat menggunakan...",
+    o: ["Satu loop saja", "Nested loop", "Binary search", "Bubble sort"],
+    a: 1
+  },
+  {
+    q: "Dalam nested loop, variabel counter loop dalam biasanya...",
+    o: ["Sama dengan loop luar", "Berbeda dan di-reset setiap iterasi loop luar", "Tidak diperlukan", "Selalu bernilai 0"],
+    a: 1
+  },
+  {
+    q: "Untuk mencetak tabel perkalian 1 sampai 10, pendekatan terbaik adalah...",
+    o: ["Satu loop dengan 100 perintah print", "Nested loop (loop luar 1-10, loop dalam 1-10)", "Binary search", "Insertion sort"],
+    a: 1
+  },
+  {
+    q: "Bahaya utama nested loop yang terlalu dalam adalah...",
+    o: ["Syntax error", "Kompleksitas waktu meningkat drastis (misal O(n³))", "Tidak bisa dijalankan", "Hanya error di Scratch"],
+    a: 1
+  },
+  {
+    q: "Pada pseudocode berikut:\nUNTUK i = 1 SAMPAI 3\n  UNTUK j = 1 SAMPAI 2\n    CETAK i, j\nBerapa kali perintah CETAK dieksekusi?",
+    o: ["3", "2", "5", "6"],
+    a: 3
+  },
+  {
+    q: "Nested loop sering digunakan untuk memproses...",
+    o: ["Data satu dimensi saja", "Data dua dimensi (matriks / tabel)", "Hanya string", "Hanya bilangan prima"],
+    a: 1
+  },
+  
+  // 44-50 Scratch / Blockly Advanced + Computational Thinking
+  {
+    q: "Di Scratch, untuk membuat salinan objek yang dapat bergerak sendiri secara independen, kita menggunakan fitur...",
+    o: ["Broadcast", "Clone", "Variable", "Costume"],
+    a: 1
+  },
+  {
+    q: "Blok 'buat blok baru' (Make a Block) di Scratch berguna untuk...",
+    o: ["Membuat custom block / prosedur sendiri", "Menghapus sprite", "Mengubah backdrop", "Menambah suara"],
+    a: 0
+  },
+  {
+    q: "Struktur data List di Scratch paling tepat digunakan untuk...",
+    o: ["Menyimpan banyak nilai dalam satu nama", "Hanya menyimpan satu angka", "Mengganti costume", "Membuat clone"],
+    a: 0
+  },
+  {
+    q: "Salah satu pilar berpikir komputasional yang berarti memecah masalah besar menjadi bagian lebih kecil adalah...",
+    o: ["Abstraksi", "Dekomposisi", "Pengenalan pola", "Algoritma"],
+    a: 1
+  },
+  {
+    q: "Dalam Scratch, untuk menjalankan beberapa skrip secara bersamaan (parallel), kita dapat menggunakan...",
+    o: ["Nested loop saja", "Broadcast / When I receive + green flag", "Hanya satu skrip", "Binary search"],
+    a: 1
+  },
+  {
+    q: "Pengenalan pola (pattern recognition) dalam berpikir komputasional membantu kita...",
+    o: ["Mengabaikan detail yang tidak penting", "Menemukan kesamaan sehingga solusi bisa digunakan ulang", "Menulis kode lebih panjang", "Menghapus data"],
+    a: 1
+  },
+  {
+    q: "Abstraksi dalam berpikir komputasional berarti...",
+    o: ["Memecah masalah menjadi kecil", "Memfokuskan pada informasi penting dan mengabaikan detail yang tidak relevan", "Menulis langkah-langkah detail", "Mengurutkan data"],
+    a: 1
+  }
+];
+
+// ===================== STATE =====================
+let cameraStream = null;
+let timerInterval = null;
+let timeLeft = 90 * 60; // 90 menit
+let isCheating = false;
+let examStarted = false;
+let answered = 0;
+
+// ===================== AUDIO BEEP (Alarm) =====================
+function playAlarm() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+    
+    oscillator.type = 'square';
+    oscillator.frequency.setValueAtTime(880, ctx.currentTime);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    
+    oscillator.start();
+    
+    // Beep pattern: 3 kali
+    let count = 0;
+    const beepInterval = setInterval(() => {
+      count++;
+      if (count % 2 === 1) {
+        gain.gain.setValueAtTime(0.35, ctx.currentTime);
+        oscillator.frequency.setValueAtTime(880, ctx.currentTime);
+      } else {
+        gain.gain.setValueAtTime(0, ctx.currentTime);
+      }
+      if (count >= 8) {
+        clearInterval(beepInterval);
+        oscillator.stop();
+        ctx.close();
+      }
+    }, 200);
+  } catch (e) {
+    console.warn("Audio tidak tersedia", e);
+  }
+}
+
+// ===================== CHEATING DETECTION =====================
+function triggerCheat(reason) {
+  if (isCheating || !examStarted) return;
+  isCheating = true;
+  
+  playAlarm();
+  
+  document.getElementById('warningBox').classList.add('show');
+  document.getElementById('dotTab').classList.remove('on');
+  document.getElementById('dotTab').classList.add('off');
+  document.getElementById('statusTab').textContent = 'Tab Aktif: TIDAK (CURANG!)';
+  
+  document.getElementById('failOverlay').classList.add('show');
+  
+  // Disable submit
+  const btn = document.getElementById('btnSubmit');
+  if (btn) btn.disabled = true;
+  
+  // Stop timer
+  if (timerInterval) clearInterval(timerInterval);
+  
+  // Setelah 4 detik, tampilkan hasil gagal
+  setTimeout(() => {
+    showResult(true);
+  }, 4000);
+}
+
+// Visibility change (ganti tab)
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && examStarted && !isCheating) {
+    triggerCheat('visibilitychange');
+  }
+});
+
+// Window blur (klik ke luar / aplikasi lain)
+window.addEventListener('blur', () => {
+  if (examStarted && !isCheating) {
+    // Beri sedikit toleransi, tapi tetap deteksi
+    setTimeout(() => {
+      if (!document.hasFocus() && examStarted && !isCheating) {
+        triggerCheat('blur');
+      }
+    }, 300);
+  }
+});
+
+// Cegah copy, right click, dll
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('copy', e => e.preventDefault());
+document.addEventListener('cut', e => e.preventDefault());
+document.addEventListener('paste', e => e.preventDefault());
+
+// ===================== CAMERA =====================
+async function startCamera() {
+  try {
+    cameraStream = await navigator.mediaDevices.getUserMedia({ 
+      video: { facingMode: 'user', width: 320, height: 240 }, 
+      audio: false 
+    });
+    const video = document.getElementById('videoPreview');
+    video.srcObject = cameraStream;
+    
+    document.getElementById('dotKamera').classList.add('on');
+    document.getElementById('statusKamera').textContent = 'Kamera: AKTIF';
+    return true;
+  } catch (err) {
+    alert('Gagal mengakses kamera!\nPastikan Anda mengizinkan akses kamera.\nUjian tidak dapat dimulai tanpa kamera.\n\nError: ' + err.message);
+    document.getElementById('dotKamera').classList.add('off');
+    document.getElementById('statusKamera').textContent = 'Kamera: GAGAL';
+    return false;
+  }
+}
+
+// ===================== TIMER =====================
+function startTimer() {
+  const timerEl = document.getElementById('timer');
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    const m = Math.floor(timeLeft / 60);
+    const s = timeLeft % 60;
+    timerEl.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      alert('Waktu habis! Jawaban akan dikirim otomatis.');
+      submitQuiz();
+    }
+    
+    // Warning warna
+    if (timeLeft <= 300) { // 5 menit
+      timerEl.style.color = '#fc8181';
+    }
+  }, 1000);
+}
+
+// ===================== RENDER SOAL =====================
+function renderQuestions() {
+  const container = document.getElementById('questionsContainer');
+  let html = '';
+  
+  soalList.forEach((soal, idx) => {
+    const no = idx + 1;
+    html += `
+      <div class="question-card" id="q${no}">
+        <div class="question-text">
+          <span class="question-number">${no}</span>
+          ${soal.q.replace(/\n/g, '<br>')}
+        </div>
+        <div class="options">
+          ${soal.o.map((opt, i) => `
+            <label>
+              <input type="radio" name="q${no}" value="${i}" onchange="updateAnswered()">
+              <span>${String.fromCharCode(65 + i)}. ${opt}</span>
+            </label>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+function updateAnswered() {
+  let count = 0;
+  for (let i = 1; i <= 50; i++) {
+    if (document.querySelector(`input[name="q${i}"]:checked`)) count++;
+  }
+  answered = count;
+  document.getElementById('answeredCount').textContent = answered;
+}
+
+// ===================== MULAI UJIAN =====================
+async function mulaiUjian() {
+  const nama = document.getElementById('nama').value.trim();
+  const kelas = document.getElementById('kelas').value.trim();
+  
+  if (!nama || !kelas) {
+    alert('Harap isi Nama Lengkap dan Kelas terlebih dahulu!');
+    return;
+  }
+  
+  // Request camera
+  const camOk = await startCamera();
+  if (!camOk) return;
+  
+  // Sembunyikan start, tampilkan proctor + quiz
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('identitasSection').style.display = 'none';
+  document.getElementById('proctorSection').classList.add('active');
+  document.getElementById('quizArea').classList.add('active');
+  
+  renderQuestions();
+  startTimer();
+  examStarted = true;
+  
+  // Fullscreen attempt (opsional)
+  try {
+    document.documentElement.requestFullscreen?.();
+  } catch(e){}
+}
+
+// ===================== SUBMIT =====================
+function submitQuiz() {
+  if (isCheating) {
+    showResult(true);
+    return;
+  }
+  
+  if (!confirm('Apakah Anda yakin ingin mengirim jawaban?\nPastikan semua soal sudah dijawab.')) return;
+  
+  if (timerInterval) clearInterval(timerInterval);
+  
+  let benar = 0;
+  for (let i = 0; i < 50; i++) {
+    const selected = document.querySelector(`input[name="q${i+1}"]:checked`);
+    if (selected && parseInt(selected.value) === soalList[i].a) {
+      benar++;
+    }
+  }
+  
+  showResult(false, benar);
+}
+
+function showResult(isFail, score = 0) {
+  // Stop camera
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(t => t.stop());
+  }
+  
+  document.getElementById('quizArea').classList.remove('active');
+  document.getElementById('proctorSection').classList.remove('active');
+  document.getElementById('resultSection').classList.add('active');
+  document.getElementById('failOverlay').classList.remove('show');
+  
+  const nama = document.getElementById('nama').value;
+  const kelas = document.getElementById('kelas').value;
+  
+  if (isFail) {
+    document.getElementById('failBanner').classList.add('show');
+    document.getElementById('scoreValue').textContent = '0';
+    document.getElementById('resultTitle').textContent = 'UJIAN GAGAL';
+    document.getElementById('resultDetail').innerHTML = 
+      'Anda terdeteksi melakukan kecurangan (membuka tab/aplikasi lain).<br>Skor akhir: <strong>0</strong>';
+  } else {
+    document.getElementById('scoreValue').textContent = score;
+    const persen = Math.round((score / 50) * 100);
+    let predikat = '';
+    if (persen >= 90) predikat = 'Sangat Baik (A)';
+    else if (persen >= 80) predikat = 'Baik (B)';
+    else if (persen >= 70) predikat = 'Cukup (C)';
+    else if (persen >= 60) predikat = 'Kurang (D)';
+    else predikat = 'Sangat Kurang (E)';
+    
+    document.getElementById('resultTitle').textContent = 'Hasil Ujian Anda';
+    document.getElementById('resultDetail').innerHTML = 
+      `Jumlah benar: <strong>${score} dari 50</strong><br>
+       Nilai: <strong>${persen}</strong><br>
+       Predikat: <strong>${predikat}</strong>`;
+  }
+  
+  document.getElementById('studentInfo').textContent = 
+    `Peserta: ${nama} | Kelas: ${kelas} | Mapel: KKA Kelas 9`;
+}
+
+// Cegah keluar halaman
+window.addEventListener('beforeunload', (e) => {
+  if (examStarted && !isCheating) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+</script>
+</body>
+</html>
